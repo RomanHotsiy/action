@@ -278,9 +278,9 @@ export async function runVersion({
   let versionsByDirectory = await getVersionsByDirectory(cwd);
 
   if (script) {
-    consle.log('>>>>', script);
+    console.log('>>>>', script);
     const scriptLines = script.split("\n");
-    for (cosnt line of scriptLines) {
+    for (let line of scriptLines) {
       let [versionCommand, ...versionArgs] = line.split(/\s+/);
       await exec(versionCommand, versionArgs, { cwd });
     }
