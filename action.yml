@@ -17,6 +17,10 @@ inputs:
     description: |
       The commit message. Default to `Version Packages`
     required: false
+  branch:
+    description: |
+      The branch override.
+    required: false
   title:
     description: The pull request title. Default to `Version Packages`
     required: false
