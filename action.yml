@@ -21,6 +21,10 @@ inputs:
     description: |
       The branch name to use. Default to `changeset-release/{{branch}}`
     required: false
+  ignore:
+    description: |
+      The project names separated by `,` to ignore in changeset calculation.
+    required: false
   title:
     description: The pull request title. Default to `Version Packages`
     required: false

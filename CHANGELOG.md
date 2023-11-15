@@ -1,5 +1,11 @@
 # @changesets/action
 
+## 1.4.3
+
+### Patch Changes
+
+- feat: Add ignore optional property to exclude changesets
+
 ## 1.4.2
 
 ### Patch Changes

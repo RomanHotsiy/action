@@ -5,6 +5,7 @@ import { runPublish, runVersion } from "./run";
 import readChangesetState from "./readChangesetState";
 
 const getOptionalInput = (name: string) => core.getInput(name) || undefined;
+const getIgnoredChangesets = (ignoredList: string | undefined) => (ignoredList ? ignoredList.split(',') : []);
 
 (async () => {
   let githubToken = process.env.GITHUB_TOKEN;
@@ -33,7 +34,8 @@ const getOptionalInput = (name: string) => core.getInput(name) || undefined;
     `machine github.com\nlogin github-actions[bot]\npassword ${githubToken}`
   );
 
-  let { changesets } = await readChangesetState();
+  const ignoredChangesetProjects = getIgnoredChangesets(getOptionalInput('ignore'));
+  let { changesets } = await readChangesetState(ignoredChangesetProjects);
 
   let publishScript = core.getInput("publish");
   let hasChangesets = changesets.length !== 0;
