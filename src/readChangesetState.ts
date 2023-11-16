@@ -16,13 +16,9 @@ export default async function readChangesetState(
 
   let rawChangesets = await readChangesets(cwd);
 
-  console.log("rawChangesets => ", JSON.stringify(rawChangesets));
-
   let changesets = rawChangesets.filter(changeset =>
     !changeset.releases.some(release => ignoredChangesetProjects.includes(release.name))
   );
-
-  console.log("changesets => ", JSON.stringify(changesets));
 
   if (isInPreMode) {
     let changesetsToFilter = new Set(preState.changesets);
