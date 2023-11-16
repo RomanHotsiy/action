@@ -273,7 +273,7 @@ export async function runVersion({
   let repo = `${github.context.repo.owner}/${github.context.repo.repo}`;
   let branch = github.context.ref.replace("refs/heads/", "");
   let versionBranch = prBranch || `changeset-release/${branch}`;
-  let { preState } = await readChangesetState(cwd);
+  let { preState } = await readChangesetState([], cwd);
 
   await gitUtils.switchToMaybeExistingBranch(versionBranch);
   await gitUtils.reset(github.context.sha);
