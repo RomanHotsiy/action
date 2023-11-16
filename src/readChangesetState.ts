@@ -19,7 +19,7 @@ export default async function readChangesetState(
   console.log("rawChangesets => ", JSON.stringify(rawChangesets));
 
   let changesets = rawChangesets.filter(changeset =>
-    !changeset.releases.some(release => !ignoredChangesetProjects.includes(release.name))
+    !changeset.releases.some(release => ignoredChangesetProjects.includes(release.name))
   );
 
   console.log("changesets => ", JSON.stringify(changesets));
