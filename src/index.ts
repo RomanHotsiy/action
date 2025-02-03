@@ -21,7 +21,6 @@ const getChangesetCwds = () =>
     core.setFailed("Please add the GITHUB_TOKEN to the changesets action");
     return;
   }
-  
 
   const inputCwd = core.getInput("cwd");
   if (inputCwd) {
@@ -47,14 +46,14 @@ const getChangesetCwds = () =>
   );
   const changesetCwds = getChangesetCwds();
 
-  console.log('**********')
+  console.log("**********");
   console.log({
     HOME: process.env.HOME,
     cwd: process.cwd(),
     changesetCwds,
-
-  })
-  console.log('**********')
+    contents: await Promise.all(changesetCwds.map((cwd) => fs.readdir(cwd))),
+  });
+  console.log("**********");
 
   const changesetStates = await Promise.all(
     changesetCwds.map((cwd) =>
