@@ -12,7 +12,7 @@ const getIgnoredChangesets = (ignoredList: string | undefined) =>
 const getChangesetCwds = () =>
   (getOptionalInput("changesetDirectories") || ".")
     .split(",")
-    .map((cwd) => path.join(process.env.HOME || process.cwd(), cwd));
+    .map((cwd) => path.join(process.cwd(), cwd));
 
 (async () => {
   let githubToken = process.env.GITHUB_TOKEN;
@@ -21,6 +21,7 @@ const getChangesetCwds = () =>
     core.setFailed("Please add the GITHUB_TOKEN to the changesets action");
     return;
   }
+  
 
   const inputCwd = core.getInput("cwd");
   if (inputCwd) {
@@ -45,6 +46,15 @@ const getChangesetCwds = () =>
     getOptionalInput("ignore")
   );
   const changesetCwds = getChangesetCwds();
+
+  console.log('**********')
+  console.log({
+    HOME: process.env.HOME,
+    cwd: process.cwd(),
+    changesetCwds,
+
+  })
+  console.log('**********')
 
   const changesetStates = await Promise.all(
     changesetCwds.map((cwd) =>
