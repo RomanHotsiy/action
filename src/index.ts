@@ -10,9 +10,9 @@ const getIgnoredChangesets = (ignoredList: string | undefined) =>
   ignoredList ? ignoredList.split(",") : [];
 
 const getChangesetCwds = () =>
-  // (getOptionalInput("changesetDirectories") || ".")
-  ".,packages/portal".split(",").map((cwd) => path.join(process.cwd(), cwd));
-
+  (getOptionalInput("changesetDirectories") || ".")
+    .split(",")
+    .map((cwd) => path.join(process.cwd(), cwd));
 (async () => {
   let githubToken = process.env.GITHUB_TOKEN;
 
@@ -44,15 +44,6 @@ const getChangesetCwds = () =>
     getOptionalInput("ignore")
   );
   const changesetCwds = getChangesetCwds();
-
-  console.log("**********");
-  console.log({
-    HOME: process.env.HOME,
-    cwd: process.cwd(),
-    changesetCwds,
-    portal: await fs.readdir(process.cwd()),
-  });
-  console.log("**********");
 
   const changesetStates = await Promise.all(
     changesetCwds.map((cwd) =>
