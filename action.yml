@@ -25,6 +25,10 @@ inputs:
     description: |
       The project names separated by `,` to ignore in changeset calculation.
     required: false
+  changesetDirectories:
+    description: |
+      Paths to directories containing `.changeset` directory, separated by `,`.
+    required: false
   title:
     description: The pull request title. Default to `Version Packages`
     required: false
