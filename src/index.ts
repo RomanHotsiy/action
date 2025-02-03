@@ -1,11 +1,18 @@
 import * as core from "@actions/core";
 import fs from "fs-extra";
+import path from "path";
 import * as gitUtils from "./gitUtils";
 import { runPublish, runVersion } from "./run";
 import readChangesetState from "./readChangesetState";
 
 const getOptionalInput = (name: string) => core.getInput(name) || undefined;
-const getIgnoredChangesets = (ignoredList: string | undefined) => (ignoredList ? ignoredList.split(',') : []);
+const getIgnoredChangesets = (ignoredList: string | undefined) =>
+  ignoredList ? ignoredList.split(",") : [];
+
+const getChangesetCwds = () =>
+  (getOptionalInput("changesetDirectories")?.split(",") || ["."]).map((cwd) =>
+    path.join(process.env.HOME || process.cwd(), cwd)
+  );
 
 (async () => {
   let githubToken = process.env.GITHUB_TOKEN;
@@ -34,8 +41,18 @@ const getIgnoredChangesets = (ignoredList: string | undefined) => (ignoredList ?
     `machine github.com\nlogin github-actions[bot]\npassword ${githubToken}`
   );
 
-  const ignoredChangesetProjects = getIgnoredChangesets(getOptionalInput('ignore'));
-  let { changesets } = await readChangesetState(ignoredChangesetProjects);
+  const ignoredChangesetProjects = getIgnoredChangesets(
+    getOptionalInput("ignore")
+  );
+  const changesetCwds = getChangesetCwds();
+
+  const changesetStates = await Promise.all(
+    changesetCwds.map((cwd) =>
+      readChangesetState(ignoredChangesetProjects, cwd)
+    )
+  );
+
+  const changesets = changesetStates.flatMap((state) => state.changesets);
 
   let publishScript = core.getInput("publish");
   let hasChangesets = changesets.length !== 0;
