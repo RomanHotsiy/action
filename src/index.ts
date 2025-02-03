@@ -10,9 +10,9 @@ const getIgnoredChangesets = (ignoredList: string | undefined) =>
   ignoredList ? ignoredList.split(",") : [];
 
 const getChangesetCwds = () =>
-  (getOptionalInput("changesetDirectories")?.split(",") || ["."]).map((cwd) =>
-    path.join(process.env.HOME || process.cwd(), cwd)
-  );
+  (getOptionalInput("changesetDirectories") || ".")
+    .split(",")
+    .map((cwd) => path.join(process.env.HOME || process.cwd(), cwd));
 
 (async () => {
   let githubToken = process.env.GITHUB_TOKEN;
